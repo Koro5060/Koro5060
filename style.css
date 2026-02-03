@@ -1,0 +1,51 @@
+body {
+  font-family: sans-serif;
+  max-width: 400px;
+  margin: 40px auto;
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+.goal {
+  background: #f0f8ff;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.input-area {
+  margin: 20px 0;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+}
+
+input {
+  padding: 6px;
+  width: 120px;
+}
+
+button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.status {
+  margin-top: 25px;
+}
+
+.character {
+  font-size: 60px;
+  margin-bottom: 10px;
+}
+
+#message {
+  margin-top: 10px;
+  font-weight: bold;
+}
