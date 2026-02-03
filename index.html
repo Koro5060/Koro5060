@@ -2,36 +2,42 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>早寝早起きゲーム</title>
+  <title>早寝早起き育成ゲーム</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <h1>🌙 早寝早起きゲーム ☀️</h1>
+<h1>🌙 早寝早起き育成ゲーム ☀️</h1>
 
-  <p class="goal">
-    目標：<br>
-    🕙 23:00までに寝る<br>
-    🌅 7:00までに起きる
-  </p>
+<div id="quote"></div>
 
-  <div class="input-area">
-    <label>寝た時間</label>
-    <input type="time" id="sleepTime">
+<section>
+  <h3>🎯 目標時間</h3>
+  寝る：<input type="time" id="targetSleep">
+  起きる：<input type="time" id="targetWake">
+  <button onclick="saveTarget()">保存</button>
+</section>
 
-    <label>起きた時間</label>
-    <input type="time" id="wakeTime">
-  </div>
+<section>
+  <h3>🛌 今日の記録</h3>
+  寝た時間：<input type="time" id="sleepTime">
+  起きた時間：<input type="time" id="wakeTime">
+  <button onclick="check()">チェック</button>
+</section>
 
-  <button id="checkBtn">チェック！</button>
+<section class="status">
+  <div class="character" id="char">🥚</div>
+  <div>月レベル：<span id="level">1</span> / 30</div>
+  <div>ポイント：<span id="point">0</span></div>
+  <div>アイテム：<span id="items">0</span></div>
+  <div id="message"></div>
+</section>
 
-  <div class="status">
-    <div class="character" id="char">🥚</div>
-    <div>レベル：<span id="level">1</span></div>
-    <div>ポイント：<span id="point">0</span></div>
-    <div id="message"></div>
-  </div>
+<section>
+  <h3>🌙 寝る前ルーティン</h3>
+  <ul id="routine"></ul>
+</section>
 
-  <script src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
