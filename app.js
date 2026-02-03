@@ -1,46 +1,110 @@
-let point = 0;
-let level = 1;
+// ===== 初期データ =====
+let data = JSON.parse(localStorage.getItem("sleepGame")) || {
+  point: 0,
+  items: 0,
+  level: 1,
+  targetSleep: "23:00",
+  targetWake: "07:00",
+  logs: []
+};
 
-const sleepInput = document.getElementById("sleepTime");
-const wakeInput = document.getElementById("wakeTime");
-const message = document.getElementById("message");
-const pointEl = document.getElementById("point");
-const levelEl = document.getElementById("level");
-const charEl = document.getElementById("char");
-const btn = document.getElementById("checkBtn");
+const quotes = [
+  "おはよう！今日も頑張ろう ☀️",
+  "昨日より一歩前へ",
+  "早寝は最高の自己投資",
+  "今日の自分を大切に"
+];
 
-btn.addEventListener("click", checkTime);
+const routines = [
+  "📱 スマホを置く",
+  "🧘‍♀️ 深呼吸30秒",
+  "📝 明日の予定を1つ書く",
+  "💡 部屋を少し暗くする"
+];
 
-function checkTime() {
-  const sleep = sleepInput.value;
-  const wake = wakeInput.value;
+// ===== 起動時 =====
+showQuote();
+showRoutine();
+updateUI();
 
-  if (!sleep || !wake) {
-    message.textContent = "時間を入力してね";
-    return;
-  }
+// ===== 機能 =====
+function saveTarget() {
+  data.targetSleep = document.getElementById("targetSleep").value;
+  data.targetWake = document.getElementById("targetWake").value;
+  save();
+}
 
-  const sleepOK = sleep <= "23:00";
-  const wakeOK = wake <= "07:00";
+function check() {
+  const sleep = document.getElementById("sleepTime").value;
+  const wake = document.getElementById("wakeTime").value;
+  const msg = document.getElementById("message");
 
-  if (sleepOK && wakeOK) {
-    point += 10;
-    message.textContent = "🎉 成功！ポイント +10";
+  if (!sleep || !wake) return;
+
+  const today = new Date().toDateString();
+
+  // 睡眠時間（自動計算）
+  const sleepDate = new Date(`2000-01-01 ${sleep}`);
+  const wakeDate = new Date(`2000-01-02 ${wake}`);
+  const hours = (wakeDate - sleepDate) / 1000 / 60 / 60;
+
+  // ログ保存
+  data.logs.push({ date: today, sleep, wake, hours });
+
+  // 目標判定
+  if (sleep <= data.targetSleep && wake <= data.targetWake) {
+    data.point += 10;
+    data.level = Math.min(30, data.level + 1);
+    msg.textContent = "🎉 目標達成！";
   } else {
-    message.textContent = "😢 失敗…明日また挑戦！";
+    msg.textContent = "😌 記録できたよ";
   }
 
-  level = Math.floor(point / 20) + 1;
-  updateCharacter();
+  // 6時間以上でアイテム
+  if (hours >= 6) {
+    data.items += 1;
+    msg.textContent += " 🎁 アイテムGET！";
+  }
 
-  pointEl.textContent = point;
-  levelEl.textContent = level;
+  updateChar();
+  save();
 }
 
-function updateCharacter() {
-  if (level >= 5) charEl.textContent = "🐉";
-  else if (level >= 4) charEl.textContent = "🦊";
-  else if (level >= 3) charEl.textContent = "🐱";
-  else if (level >= 2) charEl.textContent = "🐣";
-  else charEl.textContent = "🥚";
+// ===== 表示系 =====
+function updateUI() {
+  document.getElementById("point").textContent = data.point;
+  document.getElementById("items").textContent = data.items;
+  document.getElementById("level").textContent = data.level;
+  document.getElementById("targetSleep").value = data.targetSleep;
+  document.getElementById("targetWake").value = data.targetWake;
+  updateChar();
 }
+
+function updateChar() {
+  const c = document.getElementById("char");
+  if (data.level >= 30) c.textContent = "🐉";
+  else if (data.level >= 20) c.textContent = "🦊";
+  else if (data.level >= 10) c.textContent = "🐱";
+  else if (data.level >= 5) c.textContent = "🐣";
+  else c.textContent = "🥚";
+}
+
+function showQuote() {
+  document.getElementById("quote").textContent =
+    quotes[Math.floor(Math.random() * quotes.length)];
+}
+
+function showRoutine() {
+  const ul = document.getElementById("routine");
+  routines.forEach(r => {
+    const li = document.createElement("li");
+    li.textContent = r;
+    ul.appendChild(li);
+  });
+}
+
+function save() {
+  localStorage.setItem("sleepGame", JSON.stringify(data));
+  updateUI();
+}
+
