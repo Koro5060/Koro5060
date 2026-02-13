@@ -10,8 +10,8 @@ let data = JSON.parse(localStorage.getItem("sleepGame")) || {
 
 const quotes = [
   "おはよう！今日も頑張ろう ☀️",
-  "昨日より一歩前へ",
-  "早寝は最高の自己投資",
+  "昨日の自分より一歩前へ",
+  "早く寝るなんて偉すぎるじゃないか！！",
   "今日の自分を大切に"
 ];
 
